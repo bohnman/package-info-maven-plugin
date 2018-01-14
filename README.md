@@ -180,7 +180,7 @@ Once this is run, you'll make several observations:
     This is because the package-info.java contains special <replace></replace> markers, which tells the plugin to 
     replace the source file inline.
     
-## <a name="#multiple-templates"></a>Multiple Templates
+## <a name="multiple-templates"></a>Multiple Templates
 
 Let's use the following configuration
 
@@ -210,22 +210,22 @@ A couple of things to note:
 
 
 
-## <a name="#config-options"></a>Configuration Options
+## <a name="config-options"></a>Configuration Options
 
 | Name                 | Description   |
 | -------------        | ------------- |
-| generate             | Perform generation of new package-info.java files? (Default: true)  |
-| inline               | Perform inline replacement of existing package-info.java (Default: true)  |
-| inlineReplacePattern | Pattern to use for inline replacement (Default: (\s*//\s*<replace>\s*)(.*?)(\s*//\s*</replace>\s*))  |
-| outputDirectory      | Directory to place generated package-info.java files (Default: ${project.basedir}/generated/src/main/java)  |
+| generate             | Perform generation of new package-info.java files? (Default: ``true``)  |
+| inline               | Perform inline replacement of existing package-info.java (Default: ``true``)  |
+| inlineReplacePattern | Pattern to use for inline replacement (Default: ``(\s*//\s*<replace>\s*)(.*?)(\s*//\s*</replace>\s*)``)  |
+| outputDirectory      | Directory to place generated package-info.java files (Default: ``${project.basedir}/generated/src/main/java``)  |
 | packages             | Package pattern and template configuration (Required)  |
-| sourceDirectory      | Main source directory (Default: ${project.basedir}/src/main/java)  |
+| sourceDirectory      | Main source directory (Default: ``${project.basedir}/src/main/java``)  |
 
 
 ### Individual Package Configuration
 
 | Name                 | Description   |
 | -------------        | ------------- |
-| caseSensitive        | Indicates whether the pattern matching is case sensitive (Default: true)
+| caseSensitive        | Indicates whether the pattern matching is case sensitive (Default: ``true``)
 | pattern              | Pattern to match the current package name against (Required)
 | template             | Path to template file (Required)
