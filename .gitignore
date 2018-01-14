@@ -1,0 +1,6 @@
+.DS_STORE
+.idea/
+target/
+*.iml
+/pom.xml.versionsBackup
+src/generated/
