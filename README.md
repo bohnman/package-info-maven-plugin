@@ -142,6 +142,7 @@ mvn package-info:generate
 Once this is run, you'll make several observations:
 
 1)  Two new files are created:
+
         - ``generated/src/main/java/com/github/bohnman/example/package1/package-info.java``
         - ``generated/src/main/java/com/github/bohnman/example/package5/package-info.java``
 
@@ -205,7 +206,7 @@ Now, the generated package-info.java for package5 will use template2 instead of 
 
 A couple of things to note:
 - patterns are matching against the package name (i.e. foo.bar) and NOT the directory path.
-- pattern using Ant-style matching syntax (although regexes can be used).  See [here](https://raw.githubusercontent.com/sonatype/plexus-utils/master/src/main/java/org/codehaus/plexus/util/SelectorUtils.java) for more information
+- patterns use Ant-style matching syntax (although regexes can be used).  See [here](https://raw.githubusercontent.com/sonatype/plexus-utils/master/src/main/java/org/codehaus/plexus/util/SelectorUtils.java) for more information
 - The first package declaration to match the package wins, so you'll want to put your more specific patterns first. 
 
 ## <a name="multiple-templates"></a>Kotlin Example
@@ -216,7 +217,7 @@ JSR 305 annotations for library creators to provide better Java interoperability
 A current limitation with this support is that nullability cannot be defined at a project level.  Instead, the least
 granular choice is at a package level.  While this provides some help (as opposed to putting annotations on every 
 class, method, etc.), it is still cumbersome for libraries with several packages.  This plugin alleviates this burden, 
-by automatically generating package-info.java files with any annotations that is desired.
+by automatically generating package-info.java files with any annotations that are desired.
 
 
 Here is an example of how we would provide nullability annotations for our whole project.
