@@ -1,12 +1,13 @@
 #!/bin/bash
 
+artifactId="$(cat pom.xml | grep '<artifactId>' | head -1 | cut -d'>' -f2 | cut -d'<' -f1)"
 version="$1"
 
 if [ "$version" == "" ]; then
-    version=$(perl -0777 -ne 'print $1 if /<artifactId>squiggly-filter-jackson<\/artifactId>.*?<version>(.*?)<\/version>/smg' README.md)
+    version=$(perl -0777 -ne 'print $1 if /<artifactId>'"${artifactId}"'<\/artifactId>.*?<version>(.*?)<\/version>/smg' README.md)
 fi
 
-echo -n "Checking Version $version: "
+echo -n "Checking Version $version For $artifactId: "
 
 status=$(curl -s -o /dev/null -I -w "%{http_code}" http://central.maven.org/maven2/com/github/bohnman/squiggly-filter-jackson/${version}/squiggly-filter-jackson-${version}.jar)
 

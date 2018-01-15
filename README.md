@@ -208,6 +208,105 @@ A couple of things to note:
 - pattern using Ant-style matching syntax (although regexes can be used).  See [here](https://raw.githubusercontent.com/sonatype/plexus-utils/master/src/main/java/org/codehaus/plexus/util/SelectorUtils.java) for more information
 - The first package declaration to match the package wins, so you'll want to put your more specific patterns first. 
 
+## <a name="multiple-templates"></a>Kotlin Example
+
+As stated previously, the main motivation for this project was to provide the ability to help with nullability 
+JSR 305 annotations for library creators to provide better Java interoperability with Kotlin.
+
+A current limitation with this support is that nullability cannot be defined at a project level.  Instead, the least
+granular choice is at a package level.  While this provides some help (as opposed to putting annotations on every 
+class, method, etc.), it is still cumbersome for libraries with several packages.  This plugin alleviates this burden, 
+by automatically generating package-info.java files with any annotations that is desired.
+
+
+Here is an example of how we would provide nullability annotations for our whole project.
+
+First, we declare JSR305 as a dependency:
+
+```xml
+<dependency>
+    <groupId>com.google.code.findbugs</groupId>
+    <artifactId>jsr305</artifactId>
+    <version>3.0.2</version>
+</dependency>
+```
+
+Next, we create a NullableApi annotation that uses our JSR305 annotations;
+
+```java
+package com.github.bohnman.example;
+
+import javax.annotation.Nonnull;
+import javax.annotation.meta.TypeQualifierDefault;
+import javax.annotation.meta.When;
+import java.lang.annotation.ElementType;
+
+@Nonnull(when = When.MAYBE)
+@TypeQualifierDefault({ElementType.METHOD, ElementType.PARAMETER, ElementType.TYPE_USE})
+public @interface NullableApi {
+}
+``` 
+
+Then, we create a template package-info.java
+
+```java
+@NullableApi
+package com.github.bohnman.example;
+```
+
+Then, we configure the package import plugin to use the template package
+
+```xml
+<configuration>
+  <packages>
+    <package>
+        <pattern>**</pattern>
+        <template>${project.basedir}/src/main/java/com/github/bohnman/example/package-info.java</template>        
+    </package>
+  </packages>
+</configuration>
+```
+
+Then, we create an example class
+
+```java 
+
+package com.github.bohnman.example;
+
+import javax.annotation.Nonnull;
+
+public class Util {
+   
+   public static Date getDate1() {
+       return new Date();
+   }
+   
+   @Nonnull
+   public static Date getDate2() {
+       return new Date();
+   }
+}
+
+```
+
+Finally, we package our library up and use it in our kotlin project
+
+Note: you need to provide the kotlin compiler with the argument: ``-Xjsr305=strict``
+
+```kotlin
+package com.github.bohnman.kotlin
+
+import com.github.bohnman.example.Util
+
+fun main(args: Array<String>) {
+   println(Util.getDate1().getTime()) // error, because of NullableApi annotation, the type returned is actually Date?
+   println(Util.getDate1()?.getTime()) // works because we use the safe navigation operator 
+   println(Util.getDate2().getTime()) // works because we annotated the getDate2 method with @Nonnull
+}
+```
+
+
+For more information Kotlin and Java and null safety, [see here](https://kotlinlang.org/docs/reference/java-interop.html). 
 
 
 ## <a name="config-options"></a>Configuration Options
