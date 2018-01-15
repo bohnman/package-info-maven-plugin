@@ -143,8 +143,8 @@ Once this is run, you'll make several observations:
 
 1)  Two new files are created:
 
-        - ``generated/src/main/java/com/github/bohnman/example/package1/package-info.java``
-        - ``generated/src/main/java/com/github/bohnman/example/package5/package-info.java``
+        - generated/src/main/java/com/github/bohnman/example/package1/package-info.java
+        - generated/src/main/java/com/github/bohnman/example/package5/package-info.java
 
     Contents of package1/package-info.java:
     
