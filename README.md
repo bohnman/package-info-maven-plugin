@@ -32,7 +32,7 @@ more Kotlin-friendly
         <plugin>
             <groupId>com.github.bohnman</groupId>
             <artifactId>package-info-maven-plugin</artifactId>
-            <version>1.0</version>
+            <version>1.0.1</version>
            <configuration>
                <packages>
                    <package>

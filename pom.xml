@@ -7,7 +7,7 @@
     <description>Maven plugin that automatically generates package-info.java files based on a template.</description>
     <groupId>com.github.bohnman</groupId>
     <artifactId>package-info-maven-plugin</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.1</version>
     <packaging>maven-plugin</packaging>
 
     <properties>
