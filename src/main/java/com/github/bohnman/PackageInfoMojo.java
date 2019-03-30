@@ -2,17 +2,19 @@ package com.github.bohnman;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.SelectorUtils;
 import org.codehaus.plexus.util.StringUtils;
+import org.sonatype.plexus.build.incremental.BuildContext;
+import org.sonatype.plexus.build.incremental.DefaultBuildContext;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -29,7 +31,6 @@ import static java.lang.String.format;
  * Mojo that generates package-info.java files
  */
 @Mojo(
-
         name = "generate",
         defaultPhase = LifecyclePhase.GENERATE_SOURCES
 )
@@ -55,6 +56,9 @@ public class PackageInfoMojo extends AbstractMojo {
 
     @Parameter(defaultValue = "true")
     private boolean inline;
+
+    @Component
+    private BuildContext buildContext;
 
     private Map<String, String> templateCache = new HashMap<>();
 
@@ -101,6 +105,10 @@ public class PackageInfoMojo extends AbstractMojo {
     private void generate() throws MojoExecutionException {
         validate();
         loadTemplates();
+        if (buildContext == null) {
+            getLog().info(format("Using defaultBuildContext"));
+            buildContext = new DefaultBuildContext();
+        }
         walk(sourceDirectory, outputDirectory, "");
     }
 
@@ -246,7 +254,7 @@ public class PackageInfoMojo extends AbstractMojo {
         String replacedSource = buffer.toString();
 
         if (!replacedSource.equals(packageInfoContents)) {
-            try (OutputStream outputStream = new FileOutputStream(packageInfo)) {
+            try (OutputStream outputStream = buildContext.newFileOutputStream(packageInfo)) {
                  IOUtil.copy(new ByteArrayInputStream(replacedSource.getBytes()), outputStream);
             } catch (IOException e) {
                 throw new MojoExecutionException(format("Unable to write to [%s]", packageInfo), e);
@@ -282,7 +290,7 @@ public class PackageInfoMojo extends AbstractMojo {
 
         try (
                 InputStream inputStream = new ByteArrayInputStream(packageSource.getBytes());
-                OutputStream outputStream = new FileOutputStream(packageInfoOutputFile)) {
+                OutputStream outputStream = buildContext.newFileOutputStream(packageInfoOutputFile)) {
             write(inputStream, outputStream);
         } catch (IOException e) {
             throw new MojoExecutionException(format("Error writing [%s] to [%s]", packageSource, packageInfoOutputFile), e);
