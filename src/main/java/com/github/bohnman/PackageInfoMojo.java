@@ -45,7 +45,7 @@ public class PackageInfoMojo extends AbstractMojo {
     @Parameter(defaultValue = "${project.basedir}/generated/src/main/java")
     private File outputDirectory;
 
-    @Parameter(required = true)
+    @Parameter
     private List<Package> packages;
 
     @Parameter(defaultValue = "(\\s*//\\s*<replace>\\s*)(.*?)(\\s*//\\s*</replace>\\s*)")
@@ -103,6 +103,11 @@ public class PackageInfoMojo extends AbstractMojo {
     }
 
     private void generate() throws MojoExecutionException {
+        if (packages == null || packages.isEmpty()) {
+            getLog().warn("Skipping generate. No <packages/> declaration found.");
+            return;
+        }
+
         validate();
         loadTemplates();
         if (buildContext == null) {
@@ -136,9 +141,6 @@ public class PackageInfoMojo extends AbstractMojo {
                 throw new MojoExecutionException(format("Failed to create Output Directory [%s].", outputDirectory.getAbsolutePath()));
             }
 
-            if (packages == null || packages.isEmpty()) {
-                throw new MojoExecutionException("At least 1 <package/> declaration is required inside a <packages/> block.");
-            }
         }
 
         for (int i = 0; i < packages.size(); i++) {
