@@ -1,7 +1,5 @@
 package com.github.bohnman;
 
-import org.apache.maven.plugins.annotations.Parameter;
-
 import java.io.File;
 
 public class Package {
