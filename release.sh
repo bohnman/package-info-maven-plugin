@@ -47,7 +47,7 @@ for pomFile in ${pomFiles}; do
 done
 
 echo "Performing release"
-mvn clean deploy
+mvn -Dsign=true clean deploy
 
 if [ $? -gt 0 ]; then
     exit 1;
