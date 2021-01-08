@@ -107,6 +107,10 @@ public class PackageInfoMojo extends AbstractMojo {
             getLog().warn("Skipping generate. No <packages/> declaration found.");
             return;
         }
+        if (!sourceDirectory.exists()) {
+            getLog().info(format("Skipping generate. No Source Directory found in this module: [%s].", sourceDirectory.getAbsolutePath()));
+            return;
+        }
 
         validate();
         loadTemplates();
@@ -122,10 +126,6 @@ public class PackageInfoMojo extends AbstractMojo {
 
         if (sourceDirectory.getAbsolutePath().equals(outputDirectory.getAbsolutePath())) {
             throw new MojoExecutionException(format("Source and Output directories cannot be the same: [%s].", sourceDirectory.getAbsolutePath()));
-        }
-
-        if (!sourceDirectory.exists()) {
-            throw new MojoExecutionException(format("Source Directory [%s] does not exist.", sourceDirectory.getAbsolutePath()));
         }
 
         if (!sourceDirectory.isDirectory()) {
