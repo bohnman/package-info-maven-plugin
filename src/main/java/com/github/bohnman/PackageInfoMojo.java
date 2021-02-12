@@ -124,10 +124,6 @@ public class PackageInfoMojo extends AbstractMojo {
     private void validate() throws MojoExecutionException {
         getLog().debug("Validating parameters");
 
-        if (sourceDirectory.getAbsolutePath().equals(outputDirectory.getAbsolutePath())) {
-            throw new MojoExecutionException(format("Source and Output directories cannot be the same: [%s].", sourceDirectory.getAbsolutePath()));
-        }
-
         if (!sourceDirectory.isDirectory()) {
             throw new MojoExecutionException(format("Source Directory [%s] is not a directory.", sourceDirectory.getAbsolutePath()));
         }
