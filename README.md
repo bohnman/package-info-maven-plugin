@@ -317,7 +317,7 @@ For more information Kotlin and Java and null safety, [see here](https://kotlinl
 | generate             | Perform generation of new package-info.java files? (Default: ``true``)  |
 | inline               | Perform inline replacement of existing package-info.java (Default: ``true``)  |
 | inlineReplacePattern | Pattern to use for inline replacement (Default: ``(\s*//\s*<replace>\s*)(.*?)(\s*//\s*</replace>\s*)``)  |
-| outputDirectory      | Directory to place generated package-info.java files (Default: ``${project.basedir}/generated/src/main/java``)  |
+| outputDirectory      | Directory to place generated package-info.java files (Default: ``${project.build.directory}/generated-sources/package-info``)  |
 | packages             | Package pattern and template configuration (Required)  |
 | sourceDirectory      | Main source directory (Default: ``${project.basedir}/src/main/java``)  |
 

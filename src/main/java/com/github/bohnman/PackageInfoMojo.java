@@ -42,7 +42,7 @@ public class PackageInfoMojo extends AbstractMojo {
     @Parameter(defaultValue = "${project.basedir}/src/main/java")
     private File sourceDirectory;
 
-    @Parameter(defaultValue = "${project.basedir}/generated/src/main/java")
+    @Parameter(defaultValue = "${project.build.directory}/generated-sources/package-info")
     private File outputDirectory;
 
     @Parameter
