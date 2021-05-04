@@ -6,6 +6,7 @@ import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.SelectorUtils;
 import org.codehaus.plexus.util.StringUtils;
@@ -38,6 +39,9 @@ public class PackageInfoMojo extends AbstractMojo {
 
     private static final String PACKAGE_INFO_JAVA = "package-info.java";
     private static final Pattern PACKAGE_STATEMENT_PATTERN = Pattern.compile("^\\s*package\\s[\\S]+?\\s*;$", Pattern.MULTILINE);
+
+    @Parameter(defaultValue = "${project}")
+    private MavenProject project;
 
     @Parameter(defaultValue = "${project.basedir}/src/main/java")
     private File sourceDirectory;
@@ -94,6 +98,8 @@ public class PackageInfoMojo extends AbstractMojo {
         try {
             getLog().info(format("Generating package-info.java: %s", this));
             generate();
+            getLog().info("Adding generated code to project sources");
+            addSourceRoot();
             getLog().debug("Done.");
         } catch (MojoExecutionException e) {
             throw e;
@@ -119,6 +125,10 @@ public class PackageInfoMojo extends AbstractMojo {
             buildContext = new DefaultBuildContext();
         }
         walk(sourceDirectory, outputDirectory, "");
+    }
+
+    private void addSourceRoot() {
+        project.addCompileSourceRoot(outputDirectory.getAbsolutePath());
     }
 
     private void validate() throws MojoExecutionException {

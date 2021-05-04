@@ -70,6 +70,12 @@
             <scope>provided</scope>
         </dependency>
 
+	    <dependency>
+		    <groupId>org.apache.maven.plugin-tools</groupId>
+		    <artifactId>maven-plugin-tools-api</artifactId>
+		    <version>${maven-plugin-annotations.version}</version>
+	    </dependency>
+
         <dependency>
             <groupId>org.sonatype.plexus</groupId>
             <artifactId>plexus-build-api</artifactId>
