@@ -127,9 +127,8 @@ public class PackageInfoMojo extends AbstractMojo {
         walk(sourceDirectory, outputDirectory, "");
     }
 
-    private void addSourceRoot()
-    {
-		project.addCompileSourceRoot(outputDirectory.getAbsolutePath());
+    private void addSourceRoot() {
+        project.addCompileSourceRoot(outputDirectory.getAbsolutePath());
     }
 
     private void validate() throws MojoExecutionException {
